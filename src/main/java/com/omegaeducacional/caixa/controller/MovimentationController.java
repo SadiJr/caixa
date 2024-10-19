@@ -30,11 +30,11 @@ public class MovimentationController {
 
     @GetMapping("/find/{id}")
     public ResponseEntity<Movimentation> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(movimentationService.findById(id));
 
     }
 
-    @GetMapping("/find/{date}")
+    @GetMapping("/find/date/{date}")
     public ResponseEntity<List<Movimentation>> findByDate(@RequestParam Date date) {
         return ResponseEntity.ok(null);
     }
@@ -44,11 +44,10 @@ public class MovimentationController {
       return ResponseEntity.ok(movimentationService.findByCashId(id));
     }
 
-    @GetMapping("/filter/")
-    public ResponseEntity<List<Movimentation>> filterByDate(@RequestParam(required = false, name = "year") int year,
-                                                            @RequestParam(required = false, name = "month") int month,
-                                                            @RequestParam(required = false, name = "caixa") Long cashDeskId) {
-
+    @GetMapping("/filter")
+    public ResponseEntity<List<Movimentation>> filterByDate(@RequestParam(required = true, name = "year") int year,
+                                                            @RequestParam(required = true, name = "month") int month,
+                                                            @RequestParam(required = true, name = "caixa") Long cashDeskId) {
         return ResponseEntity.ok(movimentationService.filterByDateAndCashDesk(year, month, cashDeskId));
     }
 
