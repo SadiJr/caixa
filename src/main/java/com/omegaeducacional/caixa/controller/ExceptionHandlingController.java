@@ -15,8 +15,8 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
         return ResponseEntity.internalServerError().body("One error occurs. Please contact administrator.");
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleError(Exception ex) {
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleError(RuntimeException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }
