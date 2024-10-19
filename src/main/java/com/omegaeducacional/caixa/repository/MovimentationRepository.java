@@ -10,6 +10,6 @@ import java.util.List;
 public interface MovimentationRepository extends JpaRepository<Movimentation, Long> {
     List<Movimentation> findByCashDeskId(Long id);
 
-    @Query(nativeQuery = true, value = "select m from movimentation m where m.date like concat(:filter, '%') and m.cash_desk_id = :cashDeskId")
+    @Query(nativeQuery = true, value = "select * from movimentation where date like concat(:filter, '%') and cash_desk_id = :cashDeskId")
     List<Movimentation> findByYearAndMonthAndCashDeskId(@Param("filter") String filter, @Param("cashDeskId") Long cashDeskId);
 }

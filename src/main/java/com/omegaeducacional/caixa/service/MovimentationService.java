@@ -79,7 +79,11 @@ public class MovimentationService {
     }
 
     public List<Movimentation> filterByDateAndCashDesk(int year, int month, Long cashDeskId) {
-        String filter = String.format("%s/%s", year, month);
+        String monthQuery = String.valueOf(month);
+        if (month < 10) {
+            monthQuery = "0" + String.valueOf(month);
+        }
+        String filter = String.format("%s-%s", year, monthQuery);
         return movimentationRepository.findByYearAndMonthAndCashDeskId(filter, cashDeskId);
     }
 
