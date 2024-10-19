@@ -30,3 +30,69 @@ Docker Compose version 2.29.5
 root@b894a205f474:/# mysql --version
 mysql  Ver 15.1 Distrib 10.11.8-MariaDB, for debian-linux-gnu (x86_64) using  EditLine wrapper
 ```
+
+### Uso
+
+Para executar a aplicação, os passos necessários são:
+
+1. Realizar o _clone_ do projeto:
+```bash
+git clone https://github.com/SadiJr/caixa.git
+```
+
+2. Acessar o diretório do projeto:
+```bash
+cd caixa
+```
+
+3. Subir o banco de dados:
+```bash
+docker-compose up
+```
+
+4. Realizar o _build_ do projeto:
+```bash
+mvn clean install
+```
+
+Isso irá criar o diretório `target`, onde ficará o `jar` da aplicação.
+
+5. Executar a aplicação:
+```bash
+cd target
+java -jar caixa-0.0.1-SNAPSHOT.jar
+```
+
+Isso irá subir a aplicação _back-end_ na porta 8080.
+
+6. Criar usuário para acesso às APIs:    
+Tal aplicação utiliza JWT para realizar a autenticação do usuário. Não existe um usuário padrão por _default_, sendo necessário criar um:
+```bash
+curl --location 'localhost:8080/user/register' \
+--header 'Content-Type: application/json' \
+--data '{
+    "username": "<username>",
+    "password": "<password>"
+}'
+```
+
+7. Gerar o _token_ de acesso do usuário criado:
+```bash
+curl --location 'localhost:8080/user/login' \
+--header 'Content-Type: application/json' \
+--data '{
+    "username": "<username>",
+    "password": "<password>"
+}'
+```
+
+O _output_ desse comando conterá o _token_ de autenticação do usuário. Tal _token_ tem duração fixa de 10 horas:
+```bash
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6IlNhZGkiLCJleHAiOjE3MjkzNzc2MzZ9._iihLwuu7Y_JLO8ib40c7IvYHrSIOvQJjHdt963iSsM
+```
+
+8. Utilizar tal _token_ para acessar as demais APIs:
+```bash
+curl --location 'localhost:8080/api/cash/findAll' \
+--header 'Authorization: Bearer <token>'
+```
