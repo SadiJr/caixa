@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/movimentation")
 public class MovimentationController {
