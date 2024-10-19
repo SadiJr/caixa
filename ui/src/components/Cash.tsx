@@ -36,7 +36,7 @@ const Cash = () => {
     const navigate = useNavigate();
     const [year, setYear] = useState(null);
     const [month, setMonth] = useState(null);
-    const [cashDeskId, setCashDeskId] = useState(null);
+    const [cashDesksId, setCashDeskId] = useState<Array<string>>([]);
     let cashDesks: string[] = [];
 
 
@@ -82,9 +82,11 @@ const Cash = () => {
         console.error(err);
       });
 
-      console.log('sadi');
-      console.debug(cashDesks.at(0));
-      console.debug(cashDesks.pop());
+      setCashDeskId(cashDesks);
+      cashDesks.map((option, index) => {
+        console.log(option);
+        console.log(index);
+      });
     };
 
     const handleClose = () => {
@@ -110,7 +112,6 @@ const Cash = () => {
     };
 
     const handleDesk = (event: React.MouseEvent<HTMLButtonElement>) => {
-      console.log(event);
       handleCloseDesk();
     };
 
@@ -205,7 +206,11 @@ const Cash = () => {
                 'aria-labelledby': 'desk-button',
               }}
             >
-              <MenuItem onClick={handleDesk}>Dezembro</MenuItem>
+              {
+                cashDesksId.map((el,index) => {
+                  return <MenuItem key={index} onClick={handleDesk}>{el}</MenuItem>;
+                })
+              }
             </Menu>
           </Box>
         </Container>
