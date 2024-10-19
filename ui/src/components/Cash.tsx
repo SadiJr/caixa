@@ -83,10 +83,6 @@ const Cash = () => {
       });
 
       setCashDeskId(cashDesks);
-      cashDesks.map((option, index) => {
-        console.log(option);
-        console.log(index);
-      });
     };
 
     const handleClose = () => {
