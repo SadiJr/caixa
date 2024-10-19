@@ -8,13 +8,14 @@ import {
     TextField,
     Typography,
   } from "@mui/material";
-  import { LockOutlined } from "@mui/icons-material";
-  import { useState } from "react";
-  import { Link } from "react-router-dom";
-  import axios from "axios";
+import { LockOutlined } from "@mui/icons-material";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { API_BASE_URL, ACCESS_TOKEN_NAME } from "../constants/apiConstants";
 
   const Register = () => {
+    const navigate = useNavigate()
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
   
@@ -29,6 +30,7 @@ import { API_BASE_URL, ACCESS_TOKEN_NAME } from "../constants/apiConstants";
                 function (response) {
                     if(response.status === 200) {
                         localStorage.setItem(ACCESS_TOKEN_NAME, response.data.token);
+                        navigate('/login')
                     } else {
                         console.log("Some error ocurred");
                     }

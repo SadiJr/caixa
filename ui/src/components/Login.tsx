@@ -9,14 +9,41 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_BASE_URL, ACCESS_TOKEN_NAME } from "../constants/apiConstants";
 
 const Login = () => {
+  const navigate = useNavigate()
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
 
-  const handleLogin = () => {};
+
+  const handleLogin = () => {
+    if (password.length && name.length) {
+        const body = {
+            "username": name,
+            "password": password
+        }
+
+        axios.post(API_BASE_URL + '/user/login', body).then(
+            function (response) {
+                if(response.status === 200) {
+                    localStorage.setItem(ACCESS_TOKEN_NAME, response.data);
+                    navigate('/cash');
+                } else {
+                    console.log("Some error ocurred");
+                }
+            }
+        );
+    }
+  };
+
+  useEffect(() => {
+    localStorage.setItem("token", JSON.stringify(token));
+  }, [token]);
 
   return (
     <>
