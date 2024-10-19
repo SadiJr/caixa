@@ -24,7 +24,10 @@ public class Movimentation {
     @Column(name = "id", updatable = false, nullable = false, unique = true)
     private Long id;
 
+    // MariaDB does not have the format dd/MM/yyyy. Instead, its use the format yyyy-MM-dd
+    // See https://mariadb.com/kb/en/date/
     @Column(name = "date", nullable = false)
+    @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date date;
 
