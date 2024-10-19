@@ -30,7 +30,7 @@ import { API_BASE_URL, ACCESS_TOKEN_NAME } from "../constants/apiConstants";
                 function (response) {
                     if(response.status === 200) {
                         localStorage.setItem(ACCESS_TOKEN_NAME, response.data.token);
-                        navigate('/login')
+                        navigate('/login');
                     } else {
                         console.log("Some error ocurred");
                     }

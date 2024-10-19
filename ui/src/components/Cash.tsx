@@ -18,10 +18,27 @@ import { API_BASE_URL, ACCESS_TOKEN_NAME } from "../constants/apiConstants";
 import * as React from 'react';
 
 const Cash = () => {
-    const navigate = useNavigate()
+  const months = {
+    "Janeiro": 1,
+    "Fevereiro": 2,
+    "Março": 3,
+    "Abril": 4,
+    "Maio": 5,
+    "Junho": 6,
+    "Julho": 7,
+    "Agosto": 8,
+    "Setembro": 9,
+    "Outubro": 10,
+    "Novembro": 11,
+    "Dezembro": 12
+  };
+
+    const navigate = useNavigate();
     const [year, setYear] = useState(null);
     const [month, setMonth] = useState(null);
-    const [cashDesiId, setCashDeskId] = useState(null);
+    const [cashDeskId, setCashDeskId] = useState(null);
+    let cashDesks: string[] = [];
+
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -29,12 +46,45 @@ const Cash = () => {
     const [anchorEf, setAnchorEf] = React.useState<null | HTMLElement>(null);
     const openMonth = Boolean(anchorEf);
 
+    const [anchorEc, setAnchorEc] = React.useState<null | HTMLElement>(null);
+    const openDesk = Boolean(anchorEc);
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
     };
 
     const handleClickMonth = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEf(event.currentTarget);
+    };
+
+    const handleClickDesk = async (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEc(event.currentTarget);
+      
+      var token = localStorage.getItem(ACCESS_TOKEN_NAME);
+
+      await axios.get(API_BASE_URL + '/api/cash/findAll', {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      }).then(
+        function (response) {
+            if(response.status === 200) {
+              var si = response.data.length;
+              for (let desk = 0; desk < si; desk++) {
+                cashDesks.push(response.data[desk].description);
+              }
+            } else {
+                console.log("Some error ocurred");
+            }
+        }
+      ).catch(err => {
+        // Handle errors
+        console.error(err);
+      });
+
+      console.log('sadi');
+      console.debug(cashDesks.at(0));
+      console.debug(cashDesks.pop());
     };
 
     const handleClose = () => {
@@ -45,27 +95,32 @@ const Cash = () => {
       setAnchorEf(null);
     };
 
+    const handleCloseDesk = () => {
+      setAnchorEc(null);
+    };
+
     const handleYear = (event: React.MouseEvent<HTMLButtonElement>) => {
-      // setAnchorEl(event.currentTarget);
-      var token = localStorage.getItem(ACCESS_TOKEN_NAME);
+      handleClose();
       setYear(event.currentTarget.textContent);
-      console.log(year);
     };
 
     const handleMonth = (event: React.MouseEvent<HTMLButtonElement>) => {
-      var token = localStorage.getItem(ACCESS_TOKEN_NAME);
-      console.log(event.currentTarget.tag);
-      setMonth(event.currentTarget.tabIndex + 1);
-      console.log(month);
+      setMonth(months[event.currentTarget.textContent]);
+      handleCloseMonth();
     };
-  
+
+    const handleDesk = (event: React.MouseEvent<HTMLButtonElement>) => {
+      console.log(event);
+      handleCloseDesk();
+    };
+
     return (
       <>
         <Container maxWidth="xs">
           <CssBaseline />
           <Box
             sx={{
-              mt: 100,
+              mt: 20,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -100,7 +155,7 @@ const Cash = () => {
             </Menu>
             <Button
               id="month-button"
-              aria-controls={openMonth ? 'basic-menu' : undefined}
+              aria-controls={openMonth ? 'month-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={openMonth ? 'true' : undefined}
               onClick={handleClickMonth}
@@ -129,6 +184,28 @@ const Cash = () => {
               <MenuItem onClick={handleMonth}>Outubro</MenuItem>
               <MenuItem onClick={handleMonth}>Novembro</MenuItem>
               <MenuItem onClick={handleMonth}>Dezembro</MenuItem>
+            </Menu>
+
+            <Button
+              id="desk-button"
+              aria-controls={openDesk ? 'desk-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={openDesk ? 'true' : undefined}
+              onClick={handleClickDesk}
+            >
+              Caixa
+            </Button>
+            
+            <Menu
+              id="desk-menu"
+              anchorEl={anchorEc}
+              open={openDesk}
+              onClose={handleCloseDesk}
+              MenuListProps={{
+                'aria-labelledby': 'desk-button',
+              }}
+            >
+              <MenuItem onClick={handleDesk}>Dezembro</MenuItem>
             </Menu>
           </Box>
         </Container>
