@@ -25,14 +25,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        response.setHeader("Access-Control-Allow-Origin", "*"); // * = all domainName
-        response.setHeader("Access-Control-Allow-Credentials", "true"); // allow CrossDomain to use Origin Domain
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
-        response.setHeader("Access-Control-Max-Age", "3600"); // Preflight cache duration in browser
-        response.setHeader("Access-Control-Allow-Headers", "*"); // all header
-        filterChain.doFilter(request, response);
-
         String token = this.recoverToken(request);
 
         if(token != null){

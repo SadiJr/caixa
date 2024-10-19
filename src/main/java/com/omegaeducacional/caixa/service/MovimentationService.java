@@ -8,7 +8,6 @@ import com.omegaeducacional.caixa.repository.CashDeskRepository;
 import com.omegaeducacional.caixa.repository.MovimentationRepository;
 import com.omegaeducacional.caixa.utils.CashUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,7 @@ public class MovimentationService {
         return movimentationRepository.findById(id).get();
     }
 
-    public Movimentation createMovimentation(MovimentationDTO data) throws ParseException {
+    public Movimentation createMovimentation(MovimentationDTO data) {
         CashDesk cashDesk = cashDeskService.findById(data.deskCash());
         Double value = CashUtils.maskBalance(data.value());
 
@@ -69,7 +68,7 @@ public class MovimentationService {
     }
 
     private Double calcNewCashDeskBalance(TypeMovimentation typeMovimentation, CashDesk cashDesk, Double value) {
-        Double newBalance = null;
+        Double newBalance;
         if (TypeMovimentation.E.equals(typeMovimentation)) {
             newBalance = CashUtils.maskBalance(cashDesk.getBalance() + value);
         } else {
@@ -81,7 +80,7 @@ public class MovimentationService {
     public List<Movimentation> filterByDateAndCashDesk(int year, int month, Long cashDeskId) {
         String monthQuery = String.valueOf(month);
         if (month < 10) {
-            monthQuery = "0" + String.valueOf(month);
+            monthQuery = "0" + month;
         }
         String filter = String.format("%s-%s", year, monthQuery);
         return movimentationRepository.findByYearAndMonthAndCashDeskId(filter, cashDeskId);
