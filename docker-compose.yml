@@ -1,0 +1,18 @@
+services:
+  db:
+    image: mariadb:lts-jammy
+    restart: on-failure
+    environment:
+      MYSQL_DATABASE: 'controlecaixa'
+      MYSQL_USER: 'omega'
+      MYSQL_PASSWORD: 'omega'
+      MYSQL_ROOT_PASSWORD: 'omega'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./db:/var/lib/mysql
+
+volumes:
+  db:
