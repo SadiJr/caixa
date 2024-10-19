@@ -96,3 +96,18 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6IlNhZGkiLCJ
 curl --location 'localhost:8080/api/cash/findAll' \
 --header 'Authorization: Bearer <token>'
 ```
+
+A UI usou o React, sendo seu passo para uso:
+
+1. Instalar as dependências:
+```bash
+cd ui
+npm install
+```
+
+2. Rodar a aplicação:
+```bash
+npm run dev
+```
+
+É importante frisar que a UI está totalmente incompleta, e requer diversas melhorias.
